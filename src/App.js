@@ -1,25 +1,64 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Container from 'react-bootstrap/Container';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
+
+
+class App extends React.Component {
+  constructor(props){
+    super(props);
+      this.state = {
+        markdown: `
+        # React Markdown Previewer!
+        ## This is a sub-heading...
+            
+        Or... wait for it... **_both!_**
+          
+        And feel free to go crazy ~~crossing stuff out~~.
+              
+        There's also [links](https://ashusingh.me), and
+        > Block Quotes!
+
+        `
+      }
+  }
+
+  render() {
+    const inputStyles = {
+      width: '100%',
+      height: '80vh'
+    }
+
+    const outputStyles = {
+      width: '100%',
+      height: '80vh'
+    }
+
+    return(
+      <Container>
+        <Row>
+          <Col>
+            <h1>Mardown Previewer</h1>
+            <p>Start typing to preview your markup!</p>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <h4>Markdown input</h4>
+            <textarea style={inputStyles} value={this.state.markdown}>
+
+            </textarea>
+          </Col>
+          <Col >
+            <h4>Preview</h4>
+            <div style={outputStyles} className="bg-secondary">testing</div>
+          </Col>
+        </Row>
+      </Container>
+    )
+  }
 }
 
 export default App;
