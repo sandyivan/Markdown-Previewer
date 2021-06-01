@@ -6,6 +6,9 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFileCode } from '@fortawesome/free-solid-svg-icons' 
+
 class App extends React.Component {
   constructor(props){
     super(props);
@@ -25,7 +28,13 @@ class App extends React.Component {
       }
   }
 
+  handleChange = (e) => {
+    this.setState({ markdown: e.target.value})
+    console.log(e.target.value)
+  }
+
   render() {
+    
     const inputStyles = {
       width: '100%',
       height: '80vh'
@@ -37,23 +46,23 @@ class App extends React.Component {
     }
 
     return(
-      <Container>
-        <Row>
-          <Col>
-            <h1>Mardown Previewer</h1>
-            <p>Start typing to preview your markup!</p>
+      <Container className="border border-info">
+        <Row >
+          <Col className="bg-info text-white">
+            <h1 className="pt-3 mb-0" ><FontAwesomeIcon className="fa-sm" icon={faFileCode} /> Mardown Previewer</h1>
+            <p className="pb-3">Start typing to preview your markup!</p>
           </Col>
         </Row>
-        <Row>
-          <Col>
-            <h4>Markdown input</h4>
-            <textarea style={inputStyles} value={this.state.markdown}>
-
+        <Row className="mt-4">
+          <Col className="bg-body text-dark">
+            <h4 className="text-center">Markdown input</h4>
+            <textarea onChange={this.handleChange} style={inputStyles} value={this.state.markdown}>
+            {this.state.markdown}
             </textarea>
           </Col>
-          <Col >
-            <h4>Preview</h4>
-            <div style={outputStyles} className="bg-secondary">testing</div>
+          <Col className="text-dark">
+            <h4 className="text-center">Preview</h4>
+            <div style={outputStyles} className="bg-light p-4">{this.state.markdown}</div>
           </Col>
         </Row>
       </Container>
