@@ -1,0 +1,13 @@
+
+.container {
+    background-color: white;
+    margin-top: 40px;
+}
+
+img {
+    width: 100%;
+}
+
+#preview {
+    overflow: auto;
+}

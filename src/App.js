@@ -1,10 +1,15 @@
 import React from 'react';
 
+import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 
+import sanitizeHtml from 'sanitize-html';
+import marked from 'marked';
+
+import defaultText from './defaultText';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFileCode } from '@fortawesome/free-solid-svg-icons' 
@@ -13,24 +18,36 @@ class App extends React.Component {
   constructor(props){
     super(props);
       this.state = {
-        markdown: `
-        # React Markdown Previewer!
-        ## This is a sub-heading...
-            
-        Or... wait for it... **_both!_**
-          
-        And feel free to go crazy ~~crossing stuff out~~.
-              
-        There's also [links](https://ashusingh.me), and
-        > Block Quotes!
-
-        `
+        editor: defaultText,
+        //preview: marked(defaultText)
       }
   }
 
-  handleChange = (e) => {
-    this.setState({ markdown: e.target.value})
-    console.log(e.target.value)
+
+
+
+  inputChange = (event) => {
+    //convert user input to markdown
+    let dirtyMarkdown = marked(event.target.value)
+
+    //sanitize the user input then injecting into our preview state
+    let cleanMarkdown = sanitizeHtml(dirtyMarkdown)  
+
+    //updating our state
+    this.setState({
+      editor: event.target.value,
+      //preview: cleanMarkdown
+    });
+    
+  }
+
+  createMarkup = () => {
+    marked.setOptions({
+      breaks: true
+    })
+    
+    let rawMarkup = marked(this.state.editor);
+    return {__html: rawMarkup};
   }
 
   render() {
@@ -56,13 +73,18 @@ class App extends React.Component {
         <Row className="mt-4">
           <Col className="bg-body text-dark">
             <h4 className="text-center">Markdown input</h4>
-            <textarea onChange={this.handleChange} style={inputStyles} value={this.state.markdown}>
-            {this.state.markdown}
+            <textarea id="editor" onChange={this.inputChange} style={inputStyles} value={this.state.editor}>
+            {this.state.editor}
             </textarea>
           </Col>
-          <Col className="text-dark">
-            <h4 className="text-center">Preview</h4>
-            <div style={outputStyles} className="bg-light p-4">{this.state.markdown}</div>
+          <Col  className="text-dark">
+            <h4 className="text-center text-dark">Preview</h4>
+            <div 
+              id="preview" 
+              style={outputStyles} 
+              className="bg-light p-4"
+              dangerouslySetInnerHTML={this.createMarkup()}
+            ></div>
           </Col>
         </Row>
       </Container>
